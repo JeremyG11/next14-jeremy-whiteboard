@@ -2,9 +2,8 @@
 
 import { LucideIcon } from "lucide-react";
 
-// import { Hint } from "@/components/hint";
-import { Button } from "@/components/ui/button";
 import { ToolTip } from "./ToolTip";
+import { Button } from "@/components/ui/button";
 
 interface ToolButtonProps {
   label: string;
@@ -27,7 +26,7 @@ export const ToolButton = ({
         disabled={isDisabled}
         onClick={onClick}
         size="icon"
-        // variant={isActive ? "boardActive" : "board"}
+        variant={isActive ? "active" : "board"}
       >
         <Icon />
       </Button>

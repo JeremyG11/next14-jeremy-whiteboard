@@ -6,15 +6,6 @@ import { colorToCss } from "@/lib/utils";
 import { Cursor } from "./Cursors";
 
 function Cursors() {
-  //
-  // RATIONALE:
-  // We're using useConnectionIds() here instead of useOthers(), because this
-  // will only re-render this component if users enter or leave.
-  //
-  // Each <Cursor /> component we loop over here will subscribe to necessary
-  // changes happening for _that_ user alone, which is most rendering
-  // efficient.
-  //
   const ids = useOthersConnectionIds();
   return (
     <>
@@ -35,7 +26,6 @@ function Drafts() {
   );
   return (
     <>
-      {/* All the drawing of other users in the room that are currently in progress */}
       {others.map(([key, other]) => {
         if (other.pencilDraft) {
           return (
