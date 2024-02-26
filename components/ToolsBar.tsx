@@ -29,8 +29,8 @@ export const ToolsBar = ({
   canRedo,
 }: ToolbarProps) => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
-      <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-2xl">
+    <div className="absolute xl:bottom-16 xl:left-1/2 xl:transform xl:-translate-x-1/2 left-2 top-[50%] translate-y-[50%] flex flex-col gap-y-4">
+      <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-2xl  xl:flex-row">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -114,7 +114,7 @@ export const ToolsBar = ({
           isActive={canvasState.mode === CanvasMode.Pencil}
         />
 
-        <div className="flex gap-y-1 flex-col items-center border-t">
+        <div className="flex gap-y-1 flex-col xl:flex-row items-center border-t xl:border-t-0 xl:border-l">
           <ToolButton
             label="Undo"
             icon={Undo2}

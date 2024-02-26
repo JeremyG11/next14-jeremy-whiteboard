@@ -11,6 +11,7 @@ interface ToolButtonProps {
   onClick: () => void;
   isActive?: boolean;
   isDisabled?: boolean;
+  tooltipDirection?: "top" | "right" | "bottom" | "left";
 }
 
 export const ToolButton = ({
@@ -19,6 +20,7 @@ export const ToolButton = ({
   onClick,
   isActive,
   isDisabled,
+  tooltipDirection = "right",
 }: ToolButtonProps) => {
   return (
     <ToolTip label={label} side="right" sideOffset={14}>
@@ -27,6 +29,7 @@ export const ToolButton = ({
         onClick={onClick}
         size="icon"
         variant={isActive ? "active" : "board"}
+        className="p-2.5 hover:bg-gray-100 transition-all duration-300 rounded border-0 shadow-none"
       >
         <Icon />
       </Button>
