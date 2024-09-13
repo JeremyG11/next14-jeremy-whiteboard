@@ -23,7 +23,7 @@ export const ToolButton = ({
   tooltipDirection = "right",
 }: ToolButtonProps) => {
   return (
-    <ToolTip label={label} side="right" sideOffset={14}>
+    <ToolTip label={label} side="top" sideOffset={14}>
       <Button
         disabled={isDisabled}
         onClick={onClick}
