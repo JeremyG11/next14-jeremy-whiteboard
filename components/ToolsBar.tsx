@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Circle,
   Pencil,
@@ -10,7 +12,7 @@ import {
 } from "lucide-react";
 import { ToolButton } from "./ToolButton";
 import { Separator } from "@/components/ui/separator";
-import { CanvasMode, CanvasState, LayerType } from "@/lib/liveblock/types";
+import { CanvasMode, type CanvasState, LayerType } from "@/lib/liveblock/types";
 
 interface ToolbarProps {
   canvasState: CanvasState;
@@ -30,7 +32,7 @@ export const ToolsBar = ({
   canRedo,
 }: ToolbarProps) => {
   return (
-    <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white border rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-2xl xl:flex-row">
+    <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white border rounded-md p-1.5 flex gap-x-1 flex-row items-center shadow-2xl">
       <ToolButton
         label="Select"
         icon={MousePointer2}
@@ -132,6 +134,6 @@ export const ToolsBar = ({
 
 export const ToolbarSkeleton = () => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-red-600 h-[360px] w-[52px] shadow-md rounded-md" />
+    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white h-[360px] w-[52px] shadow-md rounded-md" />
   );
 };

@@ -1,9 +1,13 @@
 "use client";
 
-import { LucideIcon } from "lucide-react";
-
-import { ToolTip } from "./ToolTip";
-import { Button } from "@/components/ui/button";
+import type { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ToolButtonProps {
   label: string;
@@ -11,7 +15,6 @@ interface ToolButtonProps {
   onClick: () => void;
   isActive?: boolean;
   isDisabled?: boolean;
-  tooltipDirection?: "top" | "right" | "bottom" | "left";
 }
 
 export const ToolButton = ({
@@ -20,19 +23,34 @@ export const ToolButton = ({
   onClick,
   isActive,
   isDisabled,
-  tooltipDirection = "right",
 }: ToolButtonProps) => {
   return (
-    <ToolTip label={label} side="top" sideOffset={14}>
-      <Button
-        disabled={isDisabled}
-        onClick={onClick}
-        size="icon"
-        variant={isActive ? "active" : "board"}
-        className="p-2.5 hover:bg-gray-100 transition-all duration-300 rounded border-0 shadow-none"
-      >
-        <Icon />
-      </Button>
-    </ToolTip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={cn(
+              "group p-2 rounded-md flex items-center justify-center bg-white hover:bg-neutral-100 transition-colors",
+              isActive && "bg-blue-100 hover:bg-blue-100",
+              isDisabled && "opacity-50 cursor-not-allowed hover:bg-white"
+            )}
+            onClick={onClick}
+            disabled={isDisabled}
+            aria-label={label}
+          >
+            <Icon
+              className={cn(
+                "h-5 w-5 text-neutral-500 group-hover:text-neutral-700",
+                isActive && "text-blue-700 group-hover:text-blue-700"
+              )}
+            />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" align="center">
+          <p className="font-medium">{label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

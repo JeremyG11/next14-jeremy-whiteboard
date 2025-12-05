@@ -1,23 +1,11 @@
-import { Kalam } from "next/font/google";
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
+"use client";
 
-import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
+import type React from "react";
+import { useState } from "react";
+import { colorToCss } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
-import { NoteLayer } from "@/lib/liveblock/types";
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
-const calculateFontSize = (width: number, height: number) => {
-  const maxFontSize = 96;
-  const scaleFactor = 0.15;
-  const fontSizeBasedOnHeight = height * scaleFactor;
-  const fontSizeBasedOnWidth = width * scaleFactor;
-
-  return Math.min(fontSizeBasedOnHeight, fontSizeBasedOnWidth, maxFontSize);
-};
+import ContentEditable from "react-contenteditable";
+import type { NoteLayer } from "@/lib/liveblock/types";
 
 interface NoteProps {
   id: string;
@@ -26,22 +14,34 @@ interface NoteProps {
   selectionColor?: string;
 }
 
-export const Note = ({
-  layer,
-  onPointerDown,
-  id,
-  selectionColor,
-}: NoteProps) => {
+export function Note({ id, layer, onPointerDown, selectionColor }: NoteProps) {
   const { x, y, width, height, fill, value } = layer;
+  const [isEditing, setIsEditing] = useState(false);
 
-  const updateValue = useMutation(({ storage }, newValue: string) => {
-    const liveLayers = storage.get("layers");
+  const updateValue = useMutation(
+    ({ storage }, newValue: string) => {
+      const liveLayers = storage.get("layers");
+      const layer = liveLayers.get(id);
 
-    liveLayers.get(id)?.set("value", newValue);
-  }, []);
+      if (layer) {
+        layer.update({
+          value: newValue,
+        });
+      }
+    },
+    [id]
+  );
 
-  const handleContentChange = (e: ContentEditableEvent) => {
+  const handleContentChange = (e: any) => {
     updateValue(e.target.value);
+  };
+
+  const handleDoubleClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
   };
 
   return (
@@ -50,25 +50,39 @@ export const Note = ({
       y={y}
       width={width}
       height={height}
-      onPointerDown={(e) => onPointerDown(e, id)}
-      style={{
-        outline: selectionColor ? `1px solid ${selectionColor}` : "none",
-        backgroundColor: fill ? colorToCss(fill) : "#000",
+      onPointerDown={(e) => {
+        if (!isEditing) {
+          onPointerDown(e, id);
+        }
       }}
-      className="shadow-md drop-shadow-xl"
+      style={{
+        outline: selectionColor ? `2px solid ${selectionColor}` : "none",
+      }}
+      onDoubleClick={handleDoubleClick}
     >
-      <ContentEditable
-        html={value || "Text"}
-        onChange={handleContentChange}
-        className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none",
-          font.className
-        )}
+      <div
+        className="h-full w-full p-2 bg-yellow-100 rounded-md shadow-md overflow-auto"
         style={{
-          fontSize: calculateFontSize(width, height),
-          color: fill ? getContrastingTextColor(fill) : "#000",
+          backgroundColor: fill ? colorToCss(fill) : "#FEF3C7",
+          maxWidth: "100%",
         }}
-      />
+      >
+        <ContentEditable
+          html={value || "Add a note..."}
+          onChange={handleContentChange}
+          onBlur={handleBlur}
+          className="h-full w-full outline-none"
+          style={{
+            cursor: isEditing ? "text" : "move",
+            wordBreak: "break-word",
+            whiteSpace: "pre-wrap",
+            overflowWrap: "break-word",
+            maxWidth: "100%",
+            display: "block",
+          }}
+          disabled={!isEditing}
+        />
+      </div>
     </foreignObject>
   );
-};
+}

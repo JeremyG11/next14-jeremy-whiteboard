@@ -4,8 +4,8 @@ import Room from "@/components/liveblocks/Room";
 export default function BoardRoom({ params }: { params: { roomId: string } }) {
   return (
     <div className="px-2 h-screen relative overflow-hidden">
-      {/* <svg
-        // className="react-flow__background"
+      <svg
+        className="react-flow__background"
         style={{
           position: "absolute",
           width: "100%",
@@ -38,7 +38,7 @@ export default function BoardRoom({ params }: { params: { roomId: string } }) {
           height="100%"
           fill="url(#pattern-1)"
         ></rect>
-      </svg> */}
+      </svg>
 
       <Room roomId={params.roomId} />
     </div>
